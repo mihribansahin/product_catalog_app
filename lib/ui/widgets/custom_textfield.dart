@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:product_catalog_app/utils/constants/my_colors.dart';
 
 import '../../utils/form_validator.dart';
@@ -17,6 +18,7 @@ class MyTextFieldWidget extends StatefulWidget {
   Widget? suffixIcon;
   var validator;
   bool obscureText = false;
+  List<TextInputFormatter>? inputFormatters;
 
   MyTextFieldWidget({
     Key? key,
@@ -31,6 +33,7 @@ class MyTextFieldWidget extends StatefulWidget {
     this.errorMessage,
     this.suffixIcon,
     this.validator,
+    this.inputFormatters,
     required this.obscureText,
     @required this.requiredText,
   }) : super(key: key);
@@ -53,7 +56,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
           keyboardType: widget.textInputType,
           onChanged: widget.onChanged,
           obscureText: widget.obscureText,
-
+          inputFormatters: widget.inputFormatters,
           validator: (val) {
             widget.validator!(val);
           },

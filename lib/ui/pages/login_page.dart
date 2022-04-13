@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
       }),
       child: Container(
         alignment: Alignment.bottomCenter,
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(10),
         child: RichText(
           text: const TextSpan(
             text: 'Hesabın yok mu?',
@@ -116,9 +116,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   doLogin() {
-     //TODO:validate islemleri
-
-
+    //TODO:validate islemleri
   }
   Widget loginButton() {
     return Center(

@@ -1,4 +1,4 @@
-# product_catalog_app
+# Product Catalog App
 
 
 <p float="left">

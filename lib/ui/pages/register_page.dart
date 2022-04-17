@@ -2,9 +2,8 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:product_catalog_app/models/user_model.dart';
 import 'package:product_catalog_app/providers/auth_provider.dart';
-import 'package:product_catalog_app/ui/pages/home_page.dart';
 import 'package:product_catalog_app/ui/pages/login_page.dart';
-import 'package:product_catalog_app/ui/pages/register_page.dart';
+import 'package:product_catalog_app/ui/pages/products_page.dart';
 import 'package:product_catalog_app/ui/widgets/custom_button.dart';
 import 'package:product_catalog_app/ui/widgets/custom_sizedbox.dart';
 import 'package:product_catalog_app/ui/widgets/custom_textfield.dart';
@@ -35,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String? _name, _surname, _email, _password, _passwordAgain, _phoneNumber;
   final formKey = GlobalKey<FormState>();
-UserPreferences userPref = UserPreferences();
+  UserPreferences userPref = UserPreferences();
   @override
   void initState() {
     // TODO: implement initState
@@ -69,46 +68,38 @@ UserPreferences userPref = UserPreferences();
 
       final form = formKey.currentState;
       print('form!.validate()');
-      form!.save();
 
-      print(
-          '$_name,$_surname,$_email, $_phoneNumber, $_password, $_passwordAgain, $_phoneNumber');
+      if (form!.validate()) {
+        form.save();
 
-      // auth.loggedInStatus = Status.Authenticating;
+        print(
+            '$_name,$_surname,$_email, $_phoneNumber, $_password, $_passwordAgain, $_phoneNumber');
 
-      //auth.notify();
+        // auth.loggedInStatus = Status.Authenticating;
 
-      //  Future.delayed(loginTime).then((_) {
-      //    Navigator.pushReplacementNamed(context, '/login');
-      //   auth.loggedInStatus = Status.LoggedIn;
-      //   auth.notify();
-      //  });
+        //auth.notify();
 
-      if (_password!.endsWith(_passwordAgain!)) {
+        //  Future.delayed(loginTime).then((_) {
+        //    Navigator.pushReplacementNamed(context, '/login');
+        //   auth.loggedInStatus = Status.LoggedIn;
+        //   auth.notify();
+        //  });
+
         await auth.register(_name!, _email!, _password!).then((response) {
-
           if (response['status']) {
             User user = response['data'];
             Provider.of<UserProvider>(context, listen: false).setUser(user);
-       
+
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) =>  LoginPage()));
+                MaterialPageRoute(builder: (context) => ProductPage()));
           } else {
             Flushbar(
               title: 'Kayıt gerçekleşmedi.',
               message: response.toString(),
-              duration: Duration(seconds: 10),
+              duration: Duration(seconds: 4),
             ).show(context);
           }
         });
-      } else {
-        Flushbar(
-          title: 'Mismatch password',
-          message: 'Please enter valid confirm password',
-          duration: Duration(seconds: 10),
-        ).show(context);
-      }
-      /*if (form.validate()) {
       } else {
         Flushbar(
           backgroundColor: MyColors.myPurple,
@@ -117,7 +108,7 @@ UserPreferences userPref = UserPreferences();
           message: 'Lütfen bilgilerinizi kontrol ediniz ',
           duration: Duration(seconds: 10),
         ).show(context);
-      }*/
+      }
       //  final form = formKey.currentState!.save();
     }
 
@@ -171,7 +162,7 @@ UserPreferences userPref = UserPreferences();
     );
   }
 
-  Center registerButton( doRegister()) {
+  Center registerButton(doRegister()) {
     return Center(
         child: MyButton(
       buttonText: "Kayıt ol",
@@ -191,9 +182,13 @@ UserPreferences userPref = UserPreferences();
     return InkWell(
       onTap: (() {
         print("register");
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  LoginPage()),
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => LoginPage(),
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
         );
       }),
       child: Container(
@@ -224,7 +219,9 @@ UserPreferences userPref = UserPreferences();
           controller: _nameController!,
           onSaved: (value) => _name = value,
           obscureText: false,
-          validator: validateNameSurname(_nameController!.text),
+          validator: (val) {
+            return validateNameSurname(_nameController!.text);
+          },
           textInputType: TextInputType.text,
         ),
         MyTextFieldWidget(
@@ -233,7 +230,9 @@ UserPreferences userPref = UserPreferences();
           onSaved: (value) => _surname = value,
           controller: _surnameController!,
           obscureText: false,
-          validator: validateNameSurname(_surnameController!.text),
+          validator: (val) {
+            return validateNameSurname(_surnameController!.text);
+          },
           textInputType: TextInputType.text,
         ),
         MyTextFieldWidget(
@@ -245,6 +244,9 @@ UserPreferences userPref = UserPreferences();
           hintText: "+xx (xxx) xxx xx xx",
           obscureText: false,
           textInputType: TextInputType.phone,
+          validator: (val) {
+            return validatePhoneNumber(_phoneNumberController!.text);
+          },
         ),
         MyTextFieldWidget(
           myLabel: "E-mail",
@@ -254,7 +256,9 @@ UserPreferences userPref = UserPreferences();
           obscureText: false,
           textInputType: TextInputType.emailAddress,
           hintText: "example@gmail.com",
-          validator: validateEmail(_emailController!.text),
+          validator: (val) {
+            return validateEmail(_emailController!.text);
+          },
         ),
         MyTextFieldWidget(
           myLabel: "Şifre",
@@ -263,18 +267,21 @@ UserPreferences userPref = UserPreferences();
           onSubmitted: (val) {},
           controller: _passwordController!,
           textInputType: TextInputType.visiblePassword,
-          validator: validatePassword(_passwordController!.text),
+          validator: (val) {
+            return validatePassword(_passwordController!.text);
+          },
         ),
         MyTextFieldWidget(
-          myLabel: "Şifre Tekrar",
-          obscureText: true,
-          onSubmitted: (val) {},
-          onSaved: (value) => _passwordAgain = value,
-          controller: _passwordAgainController!,
-          textInputType: TextInputType.visiblePassword,
-          validator: validatePasswordAgain(
-              _passwordController!.text, _passwordAgainController!.text),
-        ),
+            myLabel: "Şifre Tekrar",
+            obscureText: true,
+            onSubmitted: (val) {},
+            onSaved: (value) => _passwordAgain = value,
+            controller: _passwordAgainController!,
+            textInputType: TextInputType.visiblePassword,
+            validator: (val) {
+              return validatePasswordAgain(
+                  _passwordController!.text, _passwordAgainController!.text);
+            }),
       ],
     );
   }

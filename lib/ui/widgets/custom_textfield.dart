@@ -17,7 +17,7 @@ class MyTextFieldWidget extends StatefulWidget {
   final String? requiredText;
   Widget? suffixIcon;
   Function(String?)? onSaved;
-  var validator;
+  FormFieldValidator<String>? validator;
   bool obscureText = false;
   List<TextInputFormatter>? inputFormatters;
 
@@ -60,7 +60,7 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
           onChanged: widget.onChanged,
           obscureText: widget.obscureText,
           inputFormatters: widget.inputFormatters,
-          validator: (val) => widget.validator,
+          validator: widget.validator,
 
           style: const TextStyle(fontFamily: 'Montserrat', fontSize: 13.0),
           decoration: InputDecoration(

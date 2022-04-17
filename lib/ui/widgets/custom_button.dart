@@ -4,9 +4,11 @@ import 'package:product_catalog_app/utils/constants/my_colors.dart';
 
 class MyButton extends StatelessWidget {
   Function()? onTapFunc = () {};
-  String buttonText = "";
+  String? buttonText;
+  Widget? buttonChild;
 
-  MyButton({Key? key, required this.onTapFunc, required this.buttonText})
+  MyButton(
+      {Key? key, required this.onTapFunc, this.buttonText, this.buttonChild})
       : super(key: key);
 
   @override
@@ -27,22 +29,15 @@ class MyButton extends StatelessWidget {
           ),
           height: 40,
           width: 200,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: Center(
-                  child: Text(
-                    buttonText,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        letterSpacing: 3,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
-            ],
+          child: buttonChild ?? Center(
+            child: Text(
+              buttonText!,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  letterSpacing: 3,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
         ),
       ),

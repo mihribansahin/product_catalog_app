@@ -1,8 +1,5 @@
 # product_catalog_app
 
-A new Flutter project.
-
-
 
  ![image] <img src="https://user-images.githubusercontent.com/65422209/163718471-b6c57a15-a5d6-4e8f-9e4f-77f9d89c55af.png" width="350" height="620">
 ![image] <img src="https://user-images.githubusercontent.com/65422209/163718527-652d5be6-3f6b-4a46-93ba-1003a2ac8f48.png" width="350" height="620">

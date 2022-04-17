@@ -32,8 +32,13 @@ dependencies:
   provider: ^6.0.2
   http: ^0.13.4
   shared_preferences: ^2.0.13
-  flushbar: ^1.10.4
+  another_flushbar: ^1.10.28
   mask_text_input_formatter: ^2.3.0
+  json_annotation: ^4.4.0
+  vertical_card_pager: ^1.5.0
+
+
+
 
 
 

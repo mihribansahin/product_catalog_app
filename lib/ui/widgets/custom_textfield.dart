@@ -16,6 +16,7 @@ class MyTextFieldWidget extends StatefulWidget {
   final String? errorMessage;
   final String? requiredText;
   Widget? suffixIcon;
+  Function(String?)? onSaved;
   var validator;
   bool obscureText = false;
   List<TextInputFormatter>? inputFormatters;
@@ -33,6 +34,7 @@ class MyTextFieldWidget extends StatefulWidget {
     this.errorMessage,
     this.suffixIcon,
     this.validator,
+    this.onSaved,
     this.inputFormatters,
     required this.obscureText,
     @required this.requiredText,
@@ -49,17 +51,17 @@ class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
-        height: 60,
+        height: 90,
         child: TextFormField(
           focusNode: widget.focusNode,
           controller: widget.controller,
           keyboardType: widget.textInputType,
+          onSaved: widget.onSaved,
           onChanged: widget.onChanged,
           obscureText: widget.obscureText,
           inputFormatters: widget.inputFormatters,
-          validator: (val) {
-            widget.validator!(val);
-          },
+          validator: (val) => widget.validator,
+
           style: const TextStyle(fontFamily: 'Montserrat', fontSize: 13.0),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.all(15.0),
